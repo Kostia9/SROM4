@@ -32,10 +32,6 @@ int mod_pow2(int exponent, int mod) {
     return result;
 }
 
-std::bitset<m> shift_bitset(const std::bitset<m>& bs, int shift) {
-    return (bs << shift) | (bs >> (m - shift));
-}
-
 
 class GF2m {
 private:
@@ -106,11 +102,11 @@ public:
         GF2m result("1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", 1);
         GF2m base = *this;
 
-        for (int i = m - 1; i >= 0; --i) {
-            result = result.square();
+        for (int i = 0; i < m; ++i) {
             if (power.value.test(i)) {
                 result = result.multiply(base);
             }
+            base = base.square();
         }
         return result;
     }
@@ -475,8 +471,6 @@ void timeTest() {
 
 
 
-
-
 MultiplicativeMatrix GF2m::multiplicativeMatrix(m);
 int main() {
     GF2m::calculateMultiplicativeMatrix();
@@ -506,12 +500,6 @@ int main() {
     std::cout << "a*a^-1: " << a.multiply(a.inverse()).toHex() << std::endl;
 
     std::cout << "Степінь a^c: " << (a.pow(c)).toHex() << std::endl;*/
-    auto start = std::chrono::high_resolution_clock::now();
-    for (int i = 0; i < 10; i++) {
-        c = a.pow(b);
-    }
-    auto stop = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     
 
 
